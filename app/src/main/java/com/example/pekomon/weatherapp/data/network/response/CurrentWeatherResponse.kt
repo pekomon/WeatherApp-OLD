@@ -1,5 +1,6 @@
-package com.example.pekomon.weatherapp.data.response
+package com.example.pekomon.weatherapp.data.network.response
 
+import com.example.pekomon.weatherapp.data.db.entity.*
 import com.google.gson.annotations.SerializedName
 
 

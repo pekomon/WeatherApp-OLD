@@ -6,9 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 
 import com.example.pekomon.weatherapp.R
-import com.example.pekomon.weatherapp.data.OpenWeatherMapApiService
+import com.example.pekomon.weatherapp.data.network.ConnectivityInterceptorImpl
+import com.example.pekomon.weatherapp.data.network.OpenWeatherMapApiService
+import com.example.pekomon.weatherapp.data.network.WeatherNetworkDataSource
+import com.example.pekomon.weatherapp.data.network.WeatherNetworkDataSourceImpl
 import kotlinx.android.synthetic.main.current_weather_fragment.*
 import kotlinx.coroutines.*
 
@@ -33,12 +37,18 @@ class CurrentWeatherFragment : Fragment() {
         viewModel = ViewModelProviders.of(this).get(CurrentWeatherViewModel::class.java)
         // TODO: Use the ViewModel
 
-        val apiService = OpenWeatherMapApiService()
+        val apiService = OpenWeatherMapApiService(ConnectivityInterceptorImpl(this.context!!))
+        val weatherNetworkDataSource = WeatherNetworkDataSourceImpl(apiService)
+
+        weatherNetworkDataSource.downLoadedCurrentWeather.observe(this, Observer {
+            textView.text = it.toString()
+        })
+
 
         // Test the connection temporarily
         GlobalScope.launch { Dispatchers.Main {
-            val currentWeatherResponse2 = apiService.getCurrentWeather("london")
-            textView.text = currentWeatherResponse2.toString()
+            weatherNetworkDataSource.fetchCurrentWeather("Berlin", "en", "metric")
         } }
+
     }
 }

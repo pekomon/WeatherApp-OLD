@@ -1,7 +1,7 @@
-package com.example.pekomon.weatherapp.data
+package com.example.pekomon.weatherapp.data.network
 
 import com.example.pekomon.weatherapp.BuildConfig
-import com.example.pekomon.weatherapp.data.response.CurrentWeatherResponse
+import com.example.pekomon.weatherapp.data.network.response.CurrentWeatherResponse
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -23,7 +23,9 @@ interface OpenWeatherMapApiService {
 
 
     companion object {
-        operator fun invoke(): OpenWeatherMapApiService {
+        operator fun invoke(
+            connectivityInterceptor: ConnectivityInterceptor
+        ): OpenWeatherMapApiService {
             val requestInterceptor = Interceptor {chain ->
                 val url = chain.request()
                     .url()
@@ -41,6 +43,7 @@ interface OpenWeatherMapApiService {
 
             val okHttpClient = OkHttpClient.Builder()
                 .addInterceptor(requestInterceptor)
+                .addInterceptor(connectivityInterceptor)
                 .build()
 
             return Retrofit.Builder()
