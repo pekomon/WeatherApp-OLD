@@ -1,6 +1,7 @@
 package com.example.pekomon.weatherapp
 
 import android.app.Application
+import com.example.pekomon.weatherapp.UI.weather.current.CurrentWeatherViewModelFactory
 import com.example.pekomon.weatherapp.data.db.WeatherDatabase
 import com.example.pekomon.weatherapp.data.network.*
 import com.example.pekomon.weatherapp.data.repository.WeatherRepository
@@ -11,6 +12,7 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.androidXModule
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
+import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
 
 class WeatherApp : Application(), KodeinAware {
@@ -24,7 +26,7 @@ class WeatherApp : Application(), KodeinAware {
         bind() from singleton { OpenWeatherMapApiService(instance())  }
         bind<WeatherNetworkDataSource>() with singleton { WeatherNetworkDataSourceImpl(instance()) }
         bind<WeatherRepository>() with singleton { WeatherRepositoryImpl(instance(), instance()) }
-
+        bind() from provider { CurrentWeatherViewModelFactory(instance()) }
     }
 
     override fun onCreate() {
