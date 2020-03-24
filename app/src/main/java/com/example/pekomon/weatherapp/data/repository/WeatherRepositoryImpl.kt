@@ -23,9 +23,9 @@ class WeatherRepositoryImpl(
         }
     }
 
-    override suspend fun getCurrentWeather(): LiveData<MainWeatherEntry> {
+    override suspend fun getCurrentWeather(metric: Boolean): LiveData<MainWeatherEntry> {
         return withContext(Dispatchers.IO) {
-            initWeatherData()
+            initWeatherData(metric)
             return@withContext currentWeatherDao.getWeather()
         }
     }
@@ -36,17 +36,20 @@ class WeatherRepositoryImpl(
         }
     }
 
-    private suspend fun initWeatherData() {
+    private suspend fun initWeatherData(metric: Boolean) {
         if (isFetchCurrentNeeded(ZonedDateTime.now().minusHours(1))) {
-            fetchCurrentWeather()
+            fetchCurrentWeather(metric)
         }
     }
 
-    private suspend fun fetchCurrentWeather() {
+    private suspend fun fetchCurrentWeather(metric: Boolean) {
+
+        val unitFormat = if (metric) "metric" else "imperial"
+
         weatherNetworkDataSource.fetchCurrentWeather(
             "Helsinki",
             Locale.getDefault().language,
-            "metric"
+            unitFormat
         )
     }
 

@@ -28,6 +28,12 @@ android {
         versionCode 1
         versionName "1.0"
 
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.incremental":"true"]
+            }
+        }
+
         // should correspond to key/value pairs inside the file
         buildConfigField("String", "APIKEY", properties['APIKEY'])
 
