@@ -3,7 +3,6 @@ package com.example.pekomon.weatherapp.UI.base
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlin.coroutines.CoroutineContext

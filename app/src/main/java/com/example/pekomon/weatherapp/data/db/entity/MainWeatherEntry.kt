@@ -16,9 +16,6 @@ import com.google.gson.annotations.SerializedName
  *
  */
 
-const val CURRENT_WEATHER_ID = 0;
-
-@Entity(tableName = "current_weather")
 data class MainWeatherEntry(
     @SerializedName("feels_like")
     val feelsLike: Double,
@@ -28,7 +25,4 @@ data class MainWeatherEntry(
     val tempMax: Double,
     @SerializedName("temp_min")
     val tempMin: Double
-) {
-    @PrimaryKey(autoGenerate = false)
-    var id: Int = CURRENT_WEATHER_ID
-}
+)
