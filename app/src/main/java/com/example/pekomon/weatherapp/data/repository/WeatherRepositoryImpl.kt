@@ -1,8 +1,9 @@
 package com.example.pekomon.weatherapp.data.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.pekomon.weatherapp.data.db.CurrentWeatherDao
-import com.example.pekomon.weatherapp.data.db.entity.MainWeatherEntry
+import com.example.pekomon.weatherapp.data.db.entity.CurrentWeatherEntity
 import com.example.pekomon.weatherapp.data.network.WeatherNetworkDataSource
 import com.example.pekomon.weatherapp.data.network.response.CurrentWeatherResponse
 import kotlinx.coroutines.Dispatchers
@@ -23,7 +24,7 @@ class WeatherRepositoryImpl(
         }
     }
 
-    override suspend fun getCurrentWeather(metric: Boolean): LiveData<MainWeatherEntry> {
+    override suspend fun getCurrentWeather(metric: Boolean): LiveData<CurrentWeatherEntity> {
         return withContext(Dispatchers.IO) {
             initWeatherData(metric)
             return@withContext currentWeatherDao.getWeather()
@@ -32,7 +33,7 @@ class WeatherRepositoryImpl(
 
     private fun persistFetchedCurrentWeather(fetchedWeather: CurrentWeatherResponse) {
         GlobalScope.launch(Dispatchers.IO) {
-            currentWeatherDao.upsert(fetchedWeather.mainWeatherEntry)
+            currentWeatherDao.upsert(CurrentWeatherEntity(fetchedWeather))
         }
     }
 

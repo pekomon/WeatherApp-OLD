@@ -4,12 +4,15 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.pekomon.weatherapp.data.db.entity.MainWeatherEntry
+import androidx.room.TypeConverters
+import com.example.pekomon.weatherapp.data.db.entity.CurrentWeatherEntity
+import com.example.pekomon.weatherapp.data.db.typeconverters.WeatherConverter
 
 @Database(
-    entities = [MainWeatherEntry::class],
+    entities = [CurrentWeatherEntity::class],
     version = 1
 )
+@TypeConverters(WeatherConverter::class)
 abstract class WeatherDatabase : RoomDatabase() {
     abstract fun currentWeatherDao() : CurrentWeatherDao
 

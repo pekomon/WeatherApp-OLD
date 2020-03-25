@@ -16,16 +16,12 @@ import kotlinx.coroutines.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
-import java.lang.reflect.MalformedParameterizedTypeException
 
 class CurrentWeatherFragment : ScopedFragment(), KodeinAware {
 
     // From application class
     override val kodein by closestKodein()
-
     private val viewModelFactory: CurrentWeatherViewModelFactory by instance()
-
-
     private lateinit var viewModel: CurrentWeatherViewModel
 
     override fun onCreateView(
@@ -40,7 +36,6 @@ class CurrentWeatherFragment : ScopedFragment(), KodeinAware {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(CurrentWeatherViewModel::class.java)
 
         bindUI()
-
     }
 
     private fun bindUI() = launch {
@@ -52,21 +47,19 @@ class CurrentWeatherFragment : ScopedFragment(), KodeinAware {
 
             }
             group_loading.visibility = View.GONE
-            updateLocation("Los Angeles")
+            updateLocation(it.name)
             updateDateToToday()
-            updateTemperatures(it.temp, it.tempMax)
-            updateCondition("cond: ${it.id}")
-            updatePrecipitation(it.tempMax)
-            updateWind("SE :) ", it.tempMax)
-            updateVisibility(it.tempMax)
+            updateTemperatures(it.mainWeatherEntry.temp , it.mainWeatherEntry.feelsLike)
+            updateCondition(it.weather?.get(0)?.description.toString())
+            // TODO: Get also 'rain' from response
+            updatePrecipitation(it.mainWeatherEntry.pressure.toDouble())
+            updateWind(it.wind.deg, it.wind.speed )
+            updateVisibility(it.visibility)
 
-            // TODO: parse real icon url
+            // TODO: safety checks please
             Glide.with(this@CurrentWeatherFragment)
-                .load("https://openweathermap.org/img/wn/01d.png")
+                .load("https://openweathermap.org/img/wn/${it.weather?.get(0)?.icon}.png")
                 .into(imageView_condition_icon)
-
-
-
         })
     }
 
@@ -92,19 +85,19 @@ class CurrentWeatherFragment : ScopedFragment(), KodeinAware {
         textViewCondition.text = "$condition"
     }
 
-    private fun updatePrecipitation(precipitationVolume: Double) {
-        val unitAbbreviation = chooseLocalizedUnitAbbreviation( "mm", "in")
-        textView_precipitation.text = "Precipitation: $precipitationVolume $unitAbbreviation"
-    }
-
-    private fun updateWind(windDirection: String, windSpeed: Double) {
-        val unitAbbreviation = chooseLocalizedUnitAbbreviation( "kmh", "mph")
+    private fun updateWind(windDirection: Int, windSpeed: Double) {
+        val unitAbbreviation = chooseLocalizedUnitAbbreviation( "m/s", "mph")
         textView_wind.text = "Wind: $windDirection $windSpeed $unitAbbreviation"
     }
 
-    private fun updateVisibility(visibility: Double) {
+    private fun updatePrecipitation(precipitationVolume: Double) {
         val unitAbbreviation = chooseLocalizedUnitAbbreviation( "mm", "in")
-        textView_precipitation.text = "Visibility: $visibility $unitAbbreviation"
+        textView_precipitation.text = "Humidity: $precipitationVolume $unitAbbreviation"
+    }
+
+    private fun updateVisibility(visibility: Int) {
+        val unitAbbreviation = chooseLocalizedUnitAbbreviation( "m", "miles")
+        textView_visibility.text = "Visibility: $visibility $unitAbbreviation"
     }
 
 }

@@ -1,6 +1,8 @@
 package com.example.pekomon.weatherapp.data.network
 
+import android.util.Log
 import com.example.pekomon.weatherapp.BuildConfig
+import com.example.pekomon.weatherapp.data.db.entity.CurrentWeatherEntity
 import com.example.pekomon.weatherapp.data.network.response.CurrentWeatherResponse
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -53,8 +55,6 @@ interface OpenWeatherMapApiService {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(OpenWeatherMapApiService::class.java)
-
         }
     }
-
 }
