@@ -43,7 +43,7 @@ class WeatherRepositoryImpl(
         val lastWeather = currentWeatherDao.getWeather().value
 
         if (lastWeather == null
-            || locationProvider.hasLocationChanged(lastWeather.name)) {
+            || locationProvider.hasLocationChanged(lastWeather)) {
             fetchCurrentWeather(metric)
             return
         }
@@ -56,11 +56,26 @@ class WeatherRepositoryImpl(
     private suspend fun fetchCurrentWeather(metric: Boolean) {
         val unitFormat = if (metric) "metric" else "imperial"
 
-        weatherNetworkDataSource.fetchCurrentWeather(
-            locationProvider.getPreferredLocationString(),
-            Locale.getDefault().language,
-            unitFormat
-        )
+        //TODO Query with coordinates!!
+        var locationString = locationProvider.getPreferredLocationString()
+        if (locationString.contains(",")) {
+            val coords = locationString.split(",")
+            val a: Double = "65".toDouble()
+            weatherNetworkDataSource.fetchCurrentWeather(
+                coords[0].toDouble(),
+                coords[1].toDouble(),
+                Locale.getDefault().language,
+                unitFormat
+            )
+        } else {
+            weatherNetworkDataSource.fetchCurrentWeather(
+                locationString,
+                Locale.getDefault().language,
+                unitFormat
+            )
+        }
+
+
     }
 
     private fun isFetchCurrentNeeded(lastFetchTime: ZonedDateTime): Boolean {

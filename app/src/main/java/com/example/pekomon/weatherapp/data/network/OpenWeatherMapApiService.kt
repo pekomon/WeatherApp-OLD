@@ -12,7 +12,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 
-// http://api.openweathermap.org/data/2.5/weather?q=London&appid=ace55638ded934d787a3f89c6ccfcc4f&lang=fi&units=metric
+// https://api.openweathermap.org/data/2.5/weather?q=London&appid=ace55638ded934d787a3f89c6ccfcc4f&lang=fi&units=metric
 
 interface OpenWeatherMapApiService {
 
@@ -23,6 +23,13 @@ interface OpenWeatherMapApiService {
         @Query("units") unitsFormat: String = "metric"
     ) : CurrentWeatherResponse
 
+    @GET("weather")
+    suspend fun getCurrentWeatherByCoords(
+        @Query("lat") latitude: Double,
+        @Query("lon") longitude: Double,
+        @Query("lang") languageCode: String = "en",
+        @Query("units") unitsFormat: String = "metric"
+    ) : CurrentWeatherResponse
 
     companion object {
         operator fun invoke(

@@ -12,4 +12,12 @@ interface WeatherNetworkDataSource {
         unitsFormat: String
     )
 
+    suspend fun fetchCurrentWeather(
+        latitude: Double,
+        longitude: Double,
+        languageCode: String,
+        unitsFormat: String
+    )
+
+
 }

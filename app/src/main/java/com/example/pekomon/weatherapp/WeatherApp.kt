@@ -1,6 +1,7 @@
 package com.example.pekomon.weatherapp
 
 import android.app.Application
+import android.content.Context
 import androidx.preference.PreferenceManager
 import com.example.pekomon.weatherapp.ui.weather.current.CurrentWeatherViewModelFactory
 import com.example.pekomon.weatherapp.data.db.WeatherDatabase
@@ -11,6 +12,7 @@ import com.example.pekomon.weatherapp.data.provider.UnitProvider
 import com.example.pekomon.weatherapp.data.provider.UnitProviderImpl
 import com.example.pekomon.weatherapp.data.repository.WeatherRepository
 import com.example.pekomon.weatherapp.data.repository.WeatherRepositoryImpl
+import com.google.android.gms.location.LocationServices
 import com.jakewharton.threetenabp.AndroidThreeTen
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -30,7 +32,8 @@ class WeatherApp : Application(), KodeinAware {
         bind<ConnectivityInterceptor>() with singleton { ConnectivityInterceptorImpl(instance()) }
         bind() from singleton { OpenWeatherMapApiService(instance())  }
         bind<WeatherNetworkDataSource>() with singleton { WeatherNetworkDataSourceImpl(instance()) }
-        bind<LocationProvider>() with singleton { LocationProviderImpl() }
+        bind() from provider { LocationServices.getFusedLocationProviderClient(instance<Context>()) }
+        bind<LocationProvider>() with singleton { LocationProviderImpl(instance(), instance()) }
         bind<WeatherRepository>() with singleton { WeatherRepositoryImpl(instance(), instance(), instance()) }
         bind<UnitProvider>() with singleton { UnitProviderImpl(instance()) }
         bind() from provider { CurrentWeatherViewModelFactory(instance(), instance()) }

@@ -29,4 +29,19 @@ class WeatherNetworkDataSourceImpl(
             Log.e("Connectivity", "No network", e)
         }
     }
+
+    override suspend fun fetchCurrentWeather(
+        latitude: Double,
+        longitude: Double,
+        languageCode: String,
+        unitsFormat: String
+    ) {
+        try {
+            val fetchedCurrentWeather = openWeatherMapApiService
+                .getCurrentWeatherByCoords(latitude, longitude, languageCode, unitsFormat)
+            _downLoadedCurrentWeather.postValue(fetchedCurrentWeather)
+        } catch (e: NoConnectivityException) {
+            Log.e("Connectivity", "No network", e)
+        }
+    }
 }
