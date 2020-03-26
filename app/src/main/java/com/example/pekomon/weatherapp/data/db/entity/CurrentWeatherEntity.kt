@@ -4,6 +4,10 @@ import androidx.room.*
 import com.example.pekomon.weatherapp.data.db.typeconverters.WeatherConverter
 import com.example.pekomon.weatherapp.data.network.response.CurrentWeatherResponse
 import com.google.gson.annotations.SerializedName
+import org.threeten.bp.Instant
+import org.threeten.bp.ZoneId
+import org.threeten.bp.ZoneOffset
+import org.threeten.bp.ZonedDateTime
 
 
 const val CURRENT_WEATHER_ID = 0;
@@ -16,7 +20,7 @@ data class CurrentWeatherEntity(
     val cod: Int,
     @Embedded(prefix = "coord_")
     val coord: Coord,
-    val dt: Int,
+    val dt: Long,
     @SerializedName("id")
     val cityId: Int,
     @SerializedName("main")
@@ -50,4 +54,10 @@ data class CurrentWeatherEntity(
         weather = currentWeather.weather,
         wind = currentWeather.wind
     )
+
+    val zonedDateTime: ZonedDateTime
+        get() {
+            val instant = Instant.ofEpochSecond(dt)
+            return ZonedDateTime.ofInstant(instant, ZoneOffset.UTC)
+        }
 }

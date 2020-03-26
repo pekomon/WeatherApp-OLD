@@ -6,6 +6,7 @@ import com.example.pekomon.weatherapp.data.db.CurrentWeatherDao
 import com.example.pekomon.weatherapp.data.db.entity.CurrentWeatherEntity
 import com.example.pekomon.weatherapp.data.network.WeatherNetworkDataSource
 import com.example.pekomon.weatherapp.data.network.response.CurrentWeatherResponse
+import com.example.pekomon.weatherapp.data.provider.LocationProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -15,7 +16,8 @@ import java.util.*
 
 class WeatherRepositoryImpl(
     private val currentWeatherDao: CurrentWeatherDao,
-    private val weatherNetworkDataSource: WeatherNetworkDataSource
+    private val weatherNetworkDataSource: WeatherNetworkDataSource,
+    private val locationProvider: LocationProvider
 ) : WeatherRepository {
 
     init {
@@ -38,17 +40,24 @@ class WeatherRepositoryImpl(
     }
 
     private suspend fun initWeatherData(metric: Boolean) {
-        if (isFetchCurrentNeeded(ZonedDateTime.now().minusHours(1))) {
+        val lastWeather = currentWeatherDao.getWeather().value
+
+        if (lastWeather == null
+            || locationProvider.hasLocationChanged(lastWeather.name)) {
+            fetchCurrentWeather(metric)
+            return
+        }
+
+        if (isFetchCurrentNeeded(lastWeather.zonedDateTime)) {
             fetchCurrentWeather(metric)
         }
     }
 
     private suspend fun fetchCurrentWeather(metric: Boolean) {
-
         val unitFormat = if (metric) "metric" else "imperial"
 
         weatherNetworkDataSource.fetchCurrentWeather(
-            "Helsinki",
+            locationProvider.getPreferredLocationString(),
             Locale.getDefault().language,
             unitFormat
         )

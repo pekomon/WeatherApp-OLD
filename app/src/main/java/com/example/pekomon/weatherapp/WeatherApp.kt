@@ -5,6 +5,8 @@ import androidx.preference.PreferenceManager
 import com.example.pekomon.weatherapp.ui.weather.current.CurrentWeatherViewModelFactory
 import com.example.pekomon.weatherapp.data.db.WeatherDatabase
 import com.example.pekomon.weatherapp.data.network.*
+import com.example.pekomon.weatherapp.data.provider.LocationProvider
+import com.example.pekomon.weatherapp.data.provider.LocationProviderImpl
 import com.example.pekomon.weatherapp.data.provider.UnitProvider
 import com.example.pekomon.weatherapp.data.provider.UnitProviderImpl
 import com.example.pekomon.weatherapp.data.repository.WeatherRepository
@@ -28,7 +30,8 @@ class WeatherApp : Application(), KodeinAware {
         bind<ConnectivityInterceptor>() with singleton { ConnectivityInterceptorImpl(instance()) }
         bind() from singleton { OpenWeatherMapApiService(instance())  }
         bind<WeatherNetworkDataSource>() with singleton { WeatherNetworkDataSourceImpl(instance()) }
-        bind<WeatherRepository>() with singleton { WeatherRepositoryImpl(instance(), instance()) }
+        bind<LocationProvider>() with singleton { LocationProviderImpl() }
+        bind<WeatherRepository>() with singleton { WeatherRepositoryImpl(instance(), instance(), instance()) }
         bind<UnitProvider>() with singleton { UnitProviderImpl(instance()) }
         bind() from provider { CurrentWeatherViewModelFactory(instance(), instance()) }
     }
@@ -40,5 +43,4 @@ class WeatherApp : Application(), KodeinAware {
         //Setting default values to prefs here. To be set only once in first launch with 'false' param
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false)
     }
-
 }

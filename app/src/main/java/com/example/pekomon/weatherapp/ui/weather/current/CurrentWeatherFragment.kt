@@ -44,7 +44,6 @@ class CurrentWeatherFragment : ScopedFragment(), KodeinAware {
         currentWeather.observe(viewLifecycleOwner, Observer {
             if (it == null) {
                 return@Observer
-
             }
             group_loading.visibility = View.GONE
             updateLocation(it.name)

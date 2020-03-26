@@ -9,7 +9,7 @@ data class CurrentWeatherResponse(
     val clouds: Clouds,
     val cod: Int,
     val coord: Coord,
-    val dt: Int,
+    val dt: Long,
     val id: Int,
     @SerializedName("main")
     val mainWeatherEntry: MainWeatherEntry,
