@@ -1,4 +1,4 @@
-package com.example.pekomon.weatherapp.UI.base
+package com.example.pekomon.weatherapp.ui.base
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

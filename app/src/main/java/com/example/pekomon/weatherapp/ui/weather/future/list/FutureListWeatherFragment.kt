@@ -1,4 +1,4 @@
-package com.example.pekomon.weatherapp.UI.weather.future.list
+package com.example.pekomon.weatherapp.ui.weather.future.list
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle

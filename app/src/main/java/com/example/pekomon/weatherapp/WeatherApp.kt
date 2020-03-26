@@ -1,7 +1,7 @@
 package com.example.pekomon.weatherapp
 
 import android.app.Application
-import com.example.pekomon.weatherapp.UI.weather.current.CurrentWeatherViewModelFactory
+import com.example.pekomon.weatherapp.ui.weather.current.CurrentWeatherViewModelFactory
 import com.example.pekomon.weatherapp.data.db.WeatherDatabase
 import com.example.pekomon.weatherapp.data.network.*
 import com.example.pekomon.weatherapp.data.repository.WeatherRepository

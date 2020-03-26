@@ -1,4 +1,4 @@
-package com.example.pekomon.weatherapp.UI
+package com.example.pekomon.weatherapp.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

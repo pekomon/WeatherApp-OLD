@@ -1,4 +1,4 @@
-package com.example.pekomon.weatherapp.UI.weather.current
+package com.example.pekomon.weatherapp.ui.weather.current
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -10,7 +10,7 @@ import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 
 import com.example.pekomon.weatherapp.R
-import com.example.pekomon.weatherapp.UI.base.ScopedFragment
+import com.example.pekomon.weatherapp.ui.base.ScopedFragment
 import kotlinx.android.synthetic.main.current_weather_fragment.*
 import kotlinx.coroutines.*
 import org.kodein.di.KodeinAware

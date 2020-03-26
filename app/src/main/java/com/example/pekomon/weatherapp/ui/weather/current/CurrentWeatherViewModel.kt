@@ -1,4 +1,4 @@
-package com.example.pekomon.weatherapp.UI.weather.current
+package com.example.pekomon.weatherapp.ui.weather.current
 
 import androidx.lifecycle.ViewModel
 import com.example.pekomon.weatherapp.data.repository.WeatherRepository

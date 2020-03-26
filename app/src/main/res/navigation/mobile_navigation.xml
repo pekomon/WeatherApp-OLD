@@ -7,21 +7,21 @@
 
     <fragment
         android:id="@+id/currentWeatherFragment"
-        android:name="com.example.pekomon.weatherapp.UI.weather.current.CurrentWeatherFragment"
+        android:name="com.example.pekomon.weatherapp.ui.weather.current.CurrentWeatherFragment"
         android:label="current_weather_fragment"
         tools:layout="@layout/current_weather_fragment" />
     <fragment
         android:id="@+id/futureListWeatherFragment"
-        android:name="com.example.pekomon.weatherapp.UI.weather.future.list.FutureListWeatherFragment"
+        android:name="com.example.pekomon.weatherapp.ui.weather.future.list.FutureListWeatherFragment"
         android:label="future_list_weather_fragment"
         tools:layout="@layout/future_list_weather_fragment" />
     <fragment
         android:id="@+id/futureDetailWeatherFragment"
-        android:name="com.example.pekomon.weatherapp.UI.weather.future.detail.FutureDetailWeatherFragment"
+        android:name="com.example.pekomon.weatherapp.ui.weather.future.detail.FutureDetailWeatherFragment"
         android:label="future_detail_weather_fragment"
         tools:layout="@layout/future_detail_weather_fragment" />
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.example.pekomon.weatherapp.UI.settings.SettingsFragment"
+        android:name="com.example.pekomon.weatherapp.ui.settings.SettingsFragment"
         android:label="SettingsFragment" />
 </navigation>
