@@ -12,6 +12,7 @@ import com.example.pekomon.weatherapp.data.provider.UnitProvider
 import com.example.pekomon.weatherapp.data.provider.UnitProviderImpl
 import com.example.pekomon.weatherapp.data.repository.WeatherRepository
 import com.example.pekomon.weatherapp.data.repository.WeatherRepositoryImpl
+import com.example.pekomon.weatherapp.ui.weather.future.list.FutureListWeatherViewModelFactory
 import com.google.android.gms.location.LocationServices
 import com.jakewharton.threetenabp.AndroidThreeTen
 import org.kodein.di.Kodein
@@ -29,14 +30,16 @@ class WeatherApp : Application(), KodeinAware {
         // WeatherDatabase() == WeatherDatabase.invoke()
         bind() from singleton { WeatherDatabase(instance())  }
         bind() from singleton { instance<WeatherDatabase>().currentWeatherDao() }
+        bind() from singleton { instance<WeatherDatabase>().futureWeatherDao() }
         bind<ConnectivityInterceptor>() with singleton { ConnectivityInterceptorImpl(instance()) }
         bind() from singleton { OpenWeatherMapApiService(instance())  }
         bind<WeatherNetworkDataSource>() with singleton { WeatherNetworkDataSourceImpl(instance()) }
         bind() from provider { LocationServices.getFusedLocationProviderClient(instance<Context>()) }
         bind<LocationProvider>() with singleton { LocationProviderImpl(instance(), instance()) }
-        bind<WeatherRepository>() with singleton { WeatherRepositoryImpl(instance(), instance(), instance()) }
+        bind<WeatherRepository>() with singleton { WeatherRepositoryImpl(instance(), instance(), instance(), instance()) }
         bind<UnitProvider>() with singleton { UnitProviderImpl(instance()) }
         bind() from provider { CurrentWeatherViewModelFactory(instance(), instance()) }
+        bind() from provider { FutureListWeatherViewModelFactory(instance(), instance()) }
     }
 
     override fun onCreate() {

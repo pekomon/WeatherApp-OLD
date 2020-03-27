@@ -59,8 +59,11 @@ class LocationProviderImpl(
     }
 
     private fun hasCustomLocationChanged(lastWeather: CurrentWeatherEntity): Boolean {
-        val customLocation = getCustomLocationName()
-        return customLocation != lastWeather.name
+        if (!isUsingDeviceLocation()) {
+            val customLocation = getCustomLocationName()
+            return customLocation != lastWeather.name
+        }
+        return false
     }
 
     private fun getCustomLocationName(): String? {

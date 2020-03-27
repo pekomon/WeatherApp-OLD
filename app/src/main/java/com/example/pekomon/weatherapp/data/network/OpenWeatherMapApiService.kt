@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.pekomon.weatherapp.BuildConfig
 import com.example.pekomon.weatherapp.data.db.entity.CurrentWeatherEntity
 import com.example.pekomon.weatherapp.data.network.response.CurrentWeatherResponse
+import com.example.pekomon.weatherapp.data.network.response.FutureWeatherResponse
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -14,6 +15,8 @@ import retrofit2.http.Query
 
 // https://api.openweathermap.org/data/2.5/weather?q=London&appid=ace55638ded934d787a3f89c6ccfcc4f&lang=fi&units=metric
 
+
+// http://api.openweathermap.org/data/2.5/forecast?q=london&units=metric&appid=ace55638ded934d787a3f89c6ccfcc4f&cnt=1
 interface OpenWeatherMapApiService {
 
     @GET("weather")
@@ -30,6 +33,23 @@ interface OpenWeatherMapApiService {
         @Query("lang") languageCode: String = "en",
         @Query("units") unitsFormat: String = "metric"
     ) : CurrentWeatherResponse
+
+    @GET("forecast")
+    suspend fun getFutureWeather(
+        @Query("q") location: String,
+        @Query("lang") languageCode: String = "en",
+        @Query("units") unitsFormat: String = "metric",
+        @Query("cnt") cnt: Int
+    ) : FutureWeatherResponse
+
+    @GET("forecast")
+    suspend fun getFutureWeatherByCoords(
+        @Query("lat") latitude: Double,
+        @Query("lon") longitude: Double,
+        @Query("lang") languageCode: String = "en",
+        @Query("units") unitsFormat: String = "metric",
+        @Query("cnt") cnt: Int
+    ) : FutureWeatherResponse
 
     companion object {
         operator fun invoke(

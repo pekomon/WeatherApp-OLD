@@ -6,15 +6,18 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.pekomon.weatherapp.data.db.entity.CurrentWeatherEntity
+import com.example.pekomon.weatherapp.data.db.entity.FutureWeatherEntity
+import com.example.pekomon.weatherapp.data.db.typeconverters.LocalDateConverter
 import com.example.pekomon.weatherapp.data.db.typeconverters.WeatherConverter
 
 @Database(
-    entities = [CurrentWeatherEntity::class],
+    entities = [CurrentWeatherEntity::class, FutureWeatherEntity::class],
     version = 1
 )
-@TypeConverters(WeatherConverter::class)
+@TypeConverters(WeatherConverter::class, LocalDateConverter::class)
 abstract class WeatherDatabase : RoomDatabase() {
     abstract fun currentWeatherDao() : CurrentWeatherDao
+    abstract fun futureWeatherDao(): FutureWeatherDao
 
     companion object {
         @Volatile private var instance: WeatherDatabase ? = null

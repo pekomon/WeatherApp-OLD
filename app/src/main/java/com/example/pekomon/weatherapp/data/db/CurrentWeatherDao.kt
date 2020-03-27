@@ -15,4 +15,14 @@ interface CurrentWeatherDao {
 
     @Query("select * from current_weather where id = $CURRENT_WEATHER_ID" )
     fun getWeather(): LiveData<CurrentWeatherEntity>
+
+    // We need this to be called from Repository because there we can't get 'value' from LiveData, but
+    // that always gives just null.
+    // For example call method below and get val x = LiveData<CurrentWeatherEntity>
+    // When trying to get CurrentWeatherEntity from Livedata by
+    // val entity = x.value
+    // => that returns just null
+    @Query("select * from current_weather where id = $CURRENT_WEATHER_ID" )
+    fun getWeatherNonLive(): CurrentWeatherEntity?
+
 }
