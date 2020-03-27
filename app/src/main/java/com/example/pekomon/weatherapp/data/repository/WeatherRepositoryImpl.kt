@@ -19,6 +19,11 @@ import org.threeten.bp.ZonedDateTime
 
 import java.util.*
 
+// TODO
+// We need bigger number and some filtering
+// At the moment API returns entries for every 3 hours so we'd need to get 40 to have one week.
+// Now 7 entries cover only 7*3 = 21 hours but that's fine in this phase (phase = development_forever :))
+
 private const val FORECAST_DAYS_COUNT = 7
 
 class WeatherRepositoryImpl(
