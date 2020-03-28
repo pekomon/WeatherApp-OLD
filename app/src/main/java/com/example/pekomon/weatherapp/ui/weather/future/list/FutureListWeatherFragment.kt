@@ -2,16 +2,19 @@ package com.example.pekomon.weatherapp.ui.weather.future.list
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.example.pekomon.weatherapp.R
-import com.example.pekomon.weatherapp.data.db.entry.SimpleFutureWeatherEntry
+import com.example.pekomon.weatherapp.data.db.entry.list.SimpleFutureWeatherEntry
+import com.example.pekomon.weatherapp.data.db.typeconverters.LocalDateConverter
 import com.example.pekomon.weatherapp.ui.base.ScopedFragment
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
@@ -21,6 +24,7 @@ import kotlinx.coroutines.launch
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
+import org.threeten.bp.LocalDate
 
 class FutureListWeatherFragment : ScopedFragment(), KodeinAware {
 
@@ -82,9 +86,18 @@ class FutureListWeatherFragment : ScopedFragment(), KodeinAware {
         }
 
         groupAdapter.setOnItemClickListener { item, view ->
-            Toast.makeText(this.context, "clicked", Toast.LENGTH_SHORT).show()
+            (item as FutureWeatherItem)?.let {
+                showWeatherDetail(it.weatherEntry.date, view)
+            }
         }
-
     }
 
+    private fun showWeatherDetail(date: LocalDate, view: View) {
+        Log.d("zzz", "Date in: ${date.toString()}" )
+        val dateString = LocalDateConverter.dateToString(date)
+        Log.d("zzz", "Date converted: $dateString")
+
+        val actionDetail = FutureListWeatherFragmentDirections.actionDetail(dateString)
+        Navigation.findNavController(view).navigate(actionDetail)
+    }
 }

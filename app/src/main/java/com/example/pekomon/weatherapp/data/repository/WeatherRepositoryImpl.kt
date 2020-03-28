@@ -1,11 +1,13 @@
 package com.example.pekomon.weatherapp.data.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.pekomon.weatherapp.data.db.CurrentWeatherDao
 import com.example.pekomon.weatherapp.data.db.FutureWeatherDao
 import com.example.pekomon.weatherapp.data.db.entity.CurrentWeatherEntity
-import com.example.pekomon.weatherapp.data.db.entry.SimpleFutureWeatherEntryImpl
+import com.example.pekomon.weatherapp.data.db.entry.detail.DetailFutureWeatherEntry
+import com.example.pekomon.weatherapp.data.db.entry.detail.DetailFutureWeatherEntryImpl
+import com.example.pekomon.weatherapp.data.db.entry.list.SimpleFutureWeatherEntry
+import com.example.pekomon.weatherapp.data.db.entry.list.SimpleFutureWeatherEntryImpl
 import com.example.pekomon.weatherapp.data.network.WeatherNetworkDataSource
 import com.example.pekomon.weatherapp.data.network.response.CurrentWeatherResponse
 import com.example.pekomon.weatherapp.data.network.response.FutureWeatherResponse
@@ -60,7 +62,16 @@ class WeatherRepositoryImpl(
             initWeatherData(metric)
             return@withContext futureWeatherDao.getSimpleWeatherEntry(startDate)
         }
+    }
 
+    override suspend fun getFutureWeatherByDate(
+        date: LocalDate,
+        metric: Boolean
+    ): LiveData<DetailFutureWeatherEntryImpl> {
+        return withContext(Dispatchers.IO) {
+            initWeatherData(metric)
+            return@withContext futureWeatherDao.getDetailedWeatherEntry(date)
+        }
     }
 
     private fun persistFetchedCurrentWeather(fetchedWeather: CurrentWeatherResponse) {

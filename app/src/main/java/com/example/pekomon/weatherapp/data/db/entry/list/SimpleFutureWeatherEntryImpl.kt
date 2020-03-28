@@ -1,6 +1,7 @@
-package com.example.pekomon.weatherapp.data.db.entry
+package com.example.pekomon.weatherapp.data.db.entry.list
 
 import androidx.room.ColumnInfo
+import com.example.pekomon.weatherapp.data.db.entry.list.SimpleFutureWeatherEntry
 import org.threeten.bp.LocalDate
 
 class SimpleFutureWeatherEntryImpl(

@@ -1,10 +1,9 @@
 package com.example.pekomon.weatherapp.ui.weather.future.list
 
 import com.example.pekomon.weatherapp.R
-import com.example.pekomon.weatherapp.data.db.entry.SimpleFutureWeatherEntry
+import com.example.pekomon.weatherapp.data.db.entry.list.SimpleFutureWeatherEntry
 import com.example.pekomon.weatherapp.data.db.typeconverters.WeatherConverter
 import com.example.pekomon.weatherapp.internal.glide.GlideApp
-import com.google.gson.Gson
 //import com.example.pekomon.weatherapp.internal.glide.GlideApp
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
@@ -14,7 +13,7 @@ import org.threeten.bp.format.FormatStyle
 
 
 class FutureWeatherItem(
-    private val weatherEntry: SimpleFutureWeatherEntry
+    val weatherEntry: SimpleFutureWeatherEntry
 ) : Item() {
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
 

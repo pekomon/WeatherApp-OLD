@@ -3,7 +3,10 @@ package com.example.pekomon.weatherapp.data.db
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.pekomon.weatherapp.data.db.entity.FutureWeatherEntity
-import com.example.pekomon.weatherapp.data.db.entry.SimpleFutureWeatherEntryImpl
+import com.example.pekomon.weatherapp.data.db.entry.detail.DetailFutureWeatherEntry
+import com.example.pekomon.weatherapp.data.db.entry.detail.DetailFutureWeatherEntryImpl
+import com.example.pekomon.weatherapp.data.db.entry.list.SimpleFutureWeatherEntry
+import com.example.pekomon.weatherapp.data.db.entry.list.SimpleFutureWeatherEntryImpl
 import org.threeten.bp.LocalDate
 
 @Dao
@@ -29,6 +32,9 @@ interface FutureWeatherDao {
 
     @Query("select dtTxt, main_temp, weather as weather_description, main_feelsLike as weather_icon from future_weather")
     fun getSimpleWeatherEntryAll(): LiveData<List<SimpleFutureWeatherEntryImpl>>
+
+    @Query("select * from future_weather where date(dtTxt) = date(:startDate)")
+    fun getDetailedWeatherEntry(startDate: LocalDate): LiveData<DetailFutureWeatherEntryImpl>
 
     @Query("select count(id) from future_weather where date(dtTxt) >= date(:startDate)")
     fun countFutureWeather(startDate: LocalDate): Int
